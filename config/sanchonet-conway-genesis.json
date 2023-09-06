@@ -1,3 +1,9 @@
 {
-    "genDelegs": {}
+  "genDelegs": {},
+  "poolVotingThresholds": {
+      "pvtCommitteeNormal": 0,
+      "pvtCommitteeNoConfidence": 0,
+      "pvtHardForkInitiation": 0,
+      "pvtMotionNoConfidence": 0
+  }
 }
