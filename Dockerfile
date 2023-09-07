@@ -1,4 +1,17 @@
+FROM rust:1-buster AS blst-builder
+
+WORKDIR /maestro/build
+RUN git clone https://github.com/supranational/blst . \
+    && git checkout v0.3.11 \
+    && ./build.sh
+
 FROM ghcr.io/blinklabs-io/haskell:8.10.7-3.6.2.0-4 as cardano-db-sync-build
+
+# Install libblst
+COPY rootfs/ /
+COPY --from=blst-builder --chmod=0644 /maestro/build/bindings/blst_aux.h /maestro/build/bindings/blst.h /maestro/build/bindings/blst.hpp /usr/local/include/
+COPY --from=blst-builder --chmod=0644 /maestro/build/libblst.a /usr/local/lib/
+
 RUN apt-get update && apt-get install -y libpq-dev
 # Install cardano-db-sync
 ARG DBSYNC_TAG=sancho-1-1-0
